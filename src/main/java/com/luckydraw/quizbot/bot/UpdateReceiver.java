@@ -6,64 +6,79 @@ import com.luckydraw.quizbot.model.User;
 import com.luckydraw.quizbot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+
+//TODO save user name as String not as chatId
 
 @Component
 public class UpdateReceiver {
 
     private final List<Handler> handlers;
+    private final UserService service;
 
-    private UserService userService;
-
-    public UpdateReceiver(List<Handler> handlers, @Autowired UserService userService) {
+    @Autowired
+    public UpdateReceiver(List<Handler> handlers, UserService service) {
         this.handlers = handlers;
-        this.userService = userService;
+        this.service = service;
     }
 
+    public List<Object> handleUpdate(Update update){
+        try{
+            if(isMessageWithText(update)){
+                final Message message = update.getMessage();
+                final Long chatId = message.getFrom().getId();
 
-    public List<PartialBotApiMethod<? extends Serializable>> handle(Update update) {
-        try {
-            if (isMessageWithText(update)) {
-                Message message = update.getMessage();
-
-                User user = userService.getInstance(String.valueOf(message.getChatId()));
-
-                if (user == null) userService.registration(new User(Math.toIntExact(message.getChatId())));
+                final User user = getCheckedUser(chatId);
 
                 return getHandlerByState(user.getState()).handle(user, message.getText());
+            }else if(update.hasCallbackQuery()){
+                final CallbackQuery callbackQuery = update.getCallbackQuery();
+                final Long chatId = callbackQuery.getFrom().getId();
+
+                final User user = getCheckedUser(chatId);
+
+                return getHandlerByCallBackQuery(callbackQuery.getData()).handle(user, callbackQuery.getData());
             }
             throw new UnsupportedOperationException();
 
-        } catch (UnsupportedOperationException e) {
+        }catch (UnsupportedOperationException e){
             return Collections.emptyList();
         }
     }
 
+    private User getCheckedUser(Long chatId){
+        User user = service.getByChatId(chatId);
+
+        if(user == null){
+            user = new User(chatId);
+            service.registration(user);
+        }
+
+        return user;
+    }
+
+    private boolean isMessageWithText(Update update){
+        return !update.hasCallbackQuery() && update.hasMessage() && update.getMessage().hasText();
+    }
 
     private Handler getHandlerByState(State state) {
         return handlers.stream()
-                .filter(h -> h.operatedBotState() != null)
-                .filter(h -> h.operatedBotState().equals(state))
+                .filter(h -> h.operatedState() != null)
+                .filter(h -> h.operatedState().equals(state))
                 .findAny()
                 .orElseThrow(UnsupportedOperationException::new);
     }
 
-    /*private Handler getHandlerByCallBackQuery(String query) {
+    private Handler getHandlerByCallBackQuery(String query) {
         return handlers.stream()
                 .filter(h -> h.operatedCallBackQuery().stream()
                         .anyMatch(query::startsWith))
                 .findAny()
                 .orElseThrow(UnsupportedOperationException::new);
-    }*/
-
-
-    private boolean isMessageWithText(Update update) {
-        return !update.hasCallbackQuery() && update.hasMessage() && update.getMessage().hasText();
     }
 }

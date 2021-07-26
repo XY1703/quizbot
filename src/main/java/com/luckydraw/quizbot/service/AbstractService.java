@@ -44,7 +44,7 @@ public abstract class AbstractService<T> {
         return t;
     }
 
-    public String makeRequest(String url) {
+    protected String makeRequest(String url) {
         StringBuilder sb = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(url).openStream()))){

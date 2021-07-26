@@ -10,4 +10,5 @@ public class QuizbotApplication {
         SpringApplication.run(QuizbotApplication.class, args);
     }
 
+
 }

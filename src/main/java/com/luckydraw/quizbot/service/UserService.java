@@ -1,18 +1,21 @@
 package com.luckydraw.quizbot.service;
 
 import com.luckydraw.quizbot.model.User;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
 @Service
 public class UserService extends AbstractService<User> {
 
+    //TODO move to properties
     private static final String URL = "http://localhost:8080/api/user/";
 
     public UserService() {
@@ -37,5 +40,12 @@ public class UserService extends AbstractService<User> {
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public User getByChatId(Long id){
+        final RestTemplate template = new RestTemplate();
+        User user = template.getForObject(URL + id, User.class);
+
+        return user;
     }
 }
