@@ -10,6 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 public class User {
 
+    private Long id;
+
     private Long chatId;
 
     private String name;
@@ -24,6 +26,10 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("\n id: %s \n name: %s \n state: %s", chatId, name, state);
+        //TODO should be refactored
+        String withId = String.format("id: %s \n chatId: %s \n name: %s \n state: %s", id, chatId, name, state);
+        String withoutId = String.format("\n chatId: %s  \n name: %s \n state: %s", chatId, name, state);
+
+        return id == null ? withoutId : withId;
     }
 }
