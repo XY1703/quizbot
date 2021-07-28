@@ -56,9 +56,8 @@ public class UpdateReceiver {
 
         if(user == null){
             user = new User(chatId);
-            service.registration(user);
+            service.save(user);
         }
-
         return user;
     }
 

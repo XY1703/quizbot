@@ -24,7 +24,7 @@ public class UserService extends AbstractService<User> {
     }
 
 
-    public void registration(User user) {
+    public void save(User user) {
         JSONObject object = new JSONObject();
         User u = getByChatId(user.getChatId());
         if(u != null) {
