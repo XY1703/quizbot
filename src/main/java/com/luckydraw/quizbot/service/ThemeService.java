@@ -24,10 +24,22 @@ public class ThemeService extends AbstractService<Theme>{
         return name.trim().toLowerCase().replaceAll(" ", "_");
     }
 
-    public List<String> getThemesListAsCommand(List<Theme> themes){
+    public List<String> getThemesListAsCommand(){
         List<String> commands = new ArrayList<>();
-        for(Theme t : themes) commands.add(convertThemeNameToCommand(t.getName()));
+        for(Theme t : getAll()) commands.add(convertThemeNameToCommand(t.getName()));
 
         return commands;
     }
+
+    public Theme convertCommandToTheme(String command){
+        List<Theme> themes = getAll();
+
+        for(Theme t : themes){
+            if(convertThemeNameToCommand(t.getName()).equals(command)) return t;
+        }
+
+        return null;
+    }
+
+
 }

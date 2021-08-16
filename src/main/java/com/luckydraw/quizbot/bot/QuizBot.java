@@ -1,8 +1,5 @@
 package com.luckydraw.quizbot.bot;
 
-import com.luckydraw.quizbot.service.ThemeService;
-import com.luckydraw.quizbot.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -12,15 +9,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
 
-//TODO move Autowired into constructor
 @Component
 public class QuizBot extends TelegramLongPollingBot {
 
-    @Autowired
-    private ThemeService service;
-
-    @Autowired
-    private UserService userService;
 
     @Value("${telegrambot.name}")
     private String userName;

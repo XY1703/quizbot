@@ -24,7 +24,7 @@ public abstract class AbstractService<T> {
         mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         List<T> list = null;
         try {
-            list = mapper.readValue(makeRequest(url), TypeFactory.defaultInstance()
+            list = mapper.readValue(makeRequest(param), TypeFactory.defaultInstance()
                     .constructCollectionType(List.class, clazz));
         } catch (JsonProcessingException e) {
             e.printStackTrace();

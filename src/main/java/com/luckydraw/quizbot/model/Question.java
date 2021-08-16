@@ -2,6 +2,7 @@ package com.luckydraw.quizbot.model;
 
 import lombok.Data;
 
+
 @Data
 public class Question {
 
@@ -9,5 +10,8 @@ public class Question {
 
     private String text;
 
-    private String rightAnswerId;
+    private Integer rightAnswerId;
+
+
+
 }
