@@ -3,11 +3,9 @@ package com.luckydraw.quizbot.model;
 import com.luckydraw.quizbot.bot.State;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
 @Builder
-@AllArgsConstructor
+@Data
 public class User {
 
     private Long id;

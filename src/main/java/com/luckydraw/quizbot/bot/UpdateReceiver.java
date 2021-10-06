@@ -13,7 +13,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.Collections;
 import java.util.List;
 
-//TODO save user name as String not as chatId
 
 @Component
 public class UpdateReceiver {

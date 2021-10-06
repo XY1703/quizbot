@@ -7,7 +7,7 @@ import java.util.List;
 
 @Service
 public class AnswerService extends AbstractService<Answer> {
-
+    //TODO move to properties
     public static final String URL = "http://localhost:8080/api/answers/question/";
 
     public AnswerService() {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public class ThemeService extends AbstractService<Theme>{
-
+    //TODO move to properties
     private static final String URL = "http://localhost:8080/api/themes";
 
     public ThemeService() {
