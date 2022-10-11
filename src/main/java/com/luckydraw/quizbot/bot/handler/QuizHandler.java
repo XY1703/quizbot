@@ -26,6 +26,9 @@ public class QuizHandler implements Handler{
     private static final String ANSWER_INCORRECT = "/answer_incorrect";
     private static final String START_QUIZ = "/start_quiz";
 
+    private int correctAnswer = 0;
+    private int incorrectAnswer = 0;
+
     @Autowired
     public QuizHandler(ThemeService themeService, UserService userService, TestService testService) {
         this.themeService = themeService;
